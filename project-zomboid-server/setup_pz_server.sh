@@ -85,7 +85,7 @@ check_and_install_rcon() {
 check_and_install_steamcmd() {
     local DOWNLOAD_DIR="/opt/steamcmd"
 
-    if ! command -v rcon &>/dev/null; then
+    if ! command -v steamcmd &>/dev/null; then
         echo "Installing Steam CMD..."
         mkdir -p "$DOWNLOAD_DIR"
         wget -O "$DOWNLOAD_DIR/steamcmd_linux.tar.gz" "$STEAMCMD_URL"
