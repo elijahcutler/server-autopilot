@@ -108,12 +108,12 @@ check_and_install_rcon
 # Firewall configuration
 sudo systemctl start firewalld
 sudo systemctl enable firewalld
-sudo systemctl status firewalld
 
 firewall-cmd --zone=public --add-port=16261/udp --permanent
 firewall-cmd --zone=public --add-port=16262/udp --permanent
 firewall-cmd --reload
 
+echo "Firewall status: "
 sudo firewall-cmd --state
 
 # Create user '$server_user' if it does not exist
@@ -124,7 +124,12 @@ if ! id -u $server_user >/dev/null 2>&1; then
 fi
 
 # Create server folder
-sudo mkdir /opt/$server_folder
+if [ -d "/opt/$server_folder" ]; then
+    echo "/opt/$server_folder exists"
+else
+    sudo mkdir /opt/$server_folder
+fi
+
 sudo chown $server_user:$server_user /opt/$server_folder
 
 # Login as server user
