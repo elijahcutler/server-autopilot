@@ -140,4 +140,4 @@ curl $pz_config_url -o $HOME/$server_user/update_zomboid.txt
 
 # Install Project Zomboid Server
 export PATH=$PATH:/usr/games
-steamcmd +runscript $HOME/update_zomboid.txt
+steamcmd +runscript $HOME/$server_user/update_zomboid.txt
