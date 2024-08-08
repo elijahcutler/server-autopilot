@@ -1,8 +1,14 @@
 #!/bin/bash
 
+# Ensure the script is run as root
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root"
+    exit 1
+fi
+
 server_user = "pzuser"
 server_folder = "pzserver"
-pz_config_url = ""
+pz_config_url = "https://raw.githubusercontent.com/elijahcutler/server-autopilot/main/project-zomboid-server/update_zomboid.txt"
 
 JAVA_URL="https://corretto.aws/downloads/latest/amazon-corretto-22-x64-linux-jdk.tar.gz"
 RCON_URL="https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz"
