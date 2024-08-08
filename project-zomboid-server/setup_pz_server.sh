@@ -12,6 +12,7 @@ pz_config_url="https://raw.githubusercontent.com/elijahcutler/server-autopilot/m
 
 JAVA_URL="https://corretto.aws/downloads/latest/amazon-corretto-22-x64-linux-jdk.tar.gz"
 RCON_URL="https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz"
+STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz"
 
 # Function to install a package if not already installed
 install_package() {
@@ -80,11 +81,40 @@ check_and_install_rcon() {
     fi
 }
 
+# Function to install Steam CMD if not already installed
+check_and_install_steamcmd() {
+    local DOWNLOAD_DIR="/opt/steamcmd"
+
+    if ! command -v rcon &>/dev/null; then
+        echo "Installing Steam CMD..."
+        mkdir -p "$DOWNLOAD_DIR"
+        wget -O "$DOWNLOAD_DIR/steamcmd_linux.tar.gz" "$RCON_URL"
+        tar -xzvf "$DOWNLOAD_DIR/steamcmd_linux.tar.gz" -C "$DOWNLOAD_DIR"
+        mv "$DOWNLOAD_DIR/steamcmd.sh" /usr/local/bin/steamcmd
+        mv "$DOWNLOAD_DIR/linux32" /usr/local/bin/steamcmd
+        chmod +x /usr/local/bin/steamcmd
+        rm -rf "$DOWNLOAD_DIR"
+    else
+        echo "Steam CMD is already installed."
+    fi
+}
+
 # Install packages
 install_package firewalld
-install_package steamcmd
+check_and_install_steamcmd
 check_and_install_java
 check_and_install_rcon
+
+# Firewall configuration
+sudo systemctl start firewalld
+sudo systemctl enable firewalld
+sudo systemctl status firewalld
+
+firewall-cmd --zone=public --add-port=16261/udp --permanent
+firewall-cmd --zone=public --add-port=16262/udp --permanent
+firewall-cmd --reload
+
+sudo firewall-cmd --state
 
 # Create user '$server_user' if it does not exist
 if ! id -u $server_user >/dev/null 2>&1; then
@@ -106,8 +136,3 @@ curl $pz_config_url -o $HOME/$server_user/update_zomboid.txt
 # Install Project Zomboid Server
 export PATH=$PATH:/usr/games
 steamcmd +runscript $HOME/update_zomboid.txt
-
-# Firewall configuration
-firewall-cmd --zone=public --add-port=16261/udp --permanent
-firewall-cmd --zone=public --add-port=16262/udp --permanent
-firewall-cmd --reload
