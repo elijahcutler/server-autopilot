@@ -2,9 +2,15 @@
 
 ## Supported Game List
 
-### Completed
+### Fully Functional
 - none
 
-### Work in Progress
+### Mostly Functional
 - Minecraft: Java Edition
+    - Fabric
+    - Paper
+    - Vanilla
+    - Forge
+
+### Early Stages
 - Project Zomboid
