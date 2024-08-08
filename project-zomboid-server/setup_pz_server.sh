@@ -69,11 +69,12 @@ check_and_install_rcon() {
 
     if ! command -v rcon &>/dev/null; then
         echo "Installing rcon..."
+        mkdir -p "$DOWNLOAD_DIR"
         wget -O "$DOWNLOAD_DIR/rcon.tar.gz" "$RCON_URL"
         tar -xzvf "$DOWNLOAD_DIR/rcon.tar.gz" -C "$DOWNLOAD_DIR"
         mv "$DOWNLOAD_DIR/rcon-0.10.3-amd64_linux/rcon" /usr/local/bin/rcon
         chmod +x /usr/local/bin/rcon
-        rm -rf "$DOWNLOAD_DIR/rcon.tar.gz" "$DOWNLOAD_DIR/rcon-0.10.3-amd64_linux"
+        rm -rf "$DOWNLOAD_DIR"
     else
         echo "rcon is already installed."
     fi
