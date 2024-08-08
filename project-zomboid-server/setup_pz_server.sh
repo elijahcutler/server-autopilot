@@ -6,9 +6,9 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-server_user = "pzuser"
-server_folder = "pzserver"
-pz_config_url = "https://raw.githubusercontent.com/elijahcutler/server-autopilot/main/project-zomboid-server/update_zomboid.txt"
+server_user="pzuser"
+server_folder="pzserver"
+pz_config_url="https://raw.githubusercontent.com/elijahcutler/server-autopilot/main/project-zomboid-server/update_zomboid.txt"
 
 JAVA_URL="https://corretto.aws/downloads/latest/amazon-corretto-22-x64-linux-jdk.tar.gz"
 RCON_URL="https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz"
@@ -65,6 +65,8 @@ check_and_install_java() {
 
 # Function to install RCON if not already installed
 check_and_install_rcon() {
+    local DOWNLOAD_DIR="/opt/rcon"
+
     if ! command -v rcon &>/dev/null; then
         echo "Installing rcon..."
         wget -O "$DOWNLOAD_DIR/rcon.tar.gz" "$RCON_URL"
