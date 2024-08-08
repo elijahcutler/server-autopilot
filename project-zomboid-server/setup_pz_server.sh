@@ -132,9 +132,6 @@ fi
 
 sudo chown $server_user:$server_user /opt/$server_folder
 
-# Login as server user
-sudo -u $server_user -i
-
 # Download configuration file
 curl $pz_config_url -o $HOME/$server_user/update_zomboid.txt
 
